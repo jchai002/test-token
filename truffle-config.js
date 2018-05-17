@@ -1,43 +1,50 @@
-require('dotenv').config();
-require('babel-register');
-require('babel-polyfill');
+require("dotenv").config();
+require("babel-register");
+require("babel-polyfill");
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require("truffle-hdwallet-provider");
 
 const providerWithMnemonic = (mnemonic, rpcEndpoint) =>
   new HDWalletProvider(mnemonic, rpcEndpoint);
 
-const infuraProvider = network => providerWithMnemonic(
-  process.env.MNEMONIC || '',
-  `https://${network}.infura.io/${process.env.INFURA_API_KEY}`
-);
+const infuraProvider = network =>
+  providerWithMnemonic(
+    process.env.MNEMONIC || "",
+    `https://${network}.infura.io/${process.env.INFURA_API_KEY}`
+  );
 
 const ropstenProvider = process.env.SOLIDITY_COVERAGE
   ? undefined
-  : infuraProvider('ropsten');
+  : infuraProvider("ropsten");
+
+const rinkebyProvider = infuraProvider("rinkeby");
 
 module.exports = {
   networks: {
     development: {
-      host: 'localhost',
+      host: "localhost",
       port: 8545,
-      network_id: '*', // eslint-disable-line camelcase
+      network_id: "*" // eslint-disable-line camelcase
     },
     ropsten: {
       provider: ropstenProvider,
-      network_id: 3, // eslint-disable-line camelcase
+      network_id: 3 // eslint-disable-line camelcase
+    },
+    rinkeby: {
+      provider: rinkebyProvider,
+      network_id: 4
     },
     coverage: {
-      host: 'localhost',
-      network_id: '*', // eslint-disable-line camelcase
+      host: "localhost",
+      network_id: "*", // eslint-disable-line camelcase
       port: 8555,
       gas: 0xfffffffffff,
-      gasPrice: 0x01,
+      gasPrice: 0x01
     },
     ganache: {
-      host: 'localhost',
+      host: "localhost",
       port: 8545,
-      network_id: '*', // eslint-disable-line camelcase
-    },
-  },
+      network_id: "*" // eslint-disable-line camelcase
+    }
+  }
 };
