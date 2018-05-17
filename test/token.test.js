@@ -40,6 +40,10 @@ contract("Contract: TestToken", accounts => {
       // then try to mint 1 more wei
       await assertRevert(token.ownerMint(accounts[1], 1));
     });
+
+    it("attempt to call selfMint should fail before owner mint is complete", async () => {
+      await assertRevert(token.selfMint(selfMintLimit, { from: accounts[1] }));
+    });
   });
 
   describe("user minting", function() {
